@@ -7,15 +7,22 @@
 
 
 def strict(func):
-    # func.__annotations__
-    print("abc")
+    
+    def wrapper(*args):
+        sign_types_list = list(func.__annotations__.values())[:-1]
+        args_types_list = [type(arg) for arg in args]
+        if sign_types_list == args_types_list:
+            return func(*args)
+        else:
+            raise TypeError() # Несоответствие типов сигнатуры функции и типов переданных аргументов
+    return wrapper
 
 
 @strict
 def sum_two(a: int, b: int) -> int:
     return a + b
 
-
+# @
 
 if __name__ == "__main__":
     print(sum_two(1, 2))  # >>> 3
